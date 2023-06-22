@@ -65,3 +65,4 @@ typings/
 
 #Script Files
 *.sh
+node_modules

@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class SingleTrack {\n  constructor(artist, album, title, duration) {\n    this.artist = artist;\n    this.album = album;\n    this.title = title;\n    this.duration = duration;\n  }\n}","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

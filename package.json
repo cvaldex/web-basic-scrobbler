@@ -10,7 +10,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "e2e": "ng e2e",
-    "build-prod": "ng build --configuration=production --base-href='https://cvaldex.github.io/webBasicScrobbler/'"
+    "build-prod": "ng build --configuration=production --base-href='https://cvaldex.github.io/web-basic-scrobbler/'"
   },
   "private": true,
   "dependencies": {
