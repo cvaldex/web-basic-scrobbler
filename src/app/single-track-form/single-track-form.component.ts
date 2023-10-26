@@ -28,9 +28,13 @@ export class SingleTrackFormComponent {
     
     var scrobble = {
       "scrobbles":{
-        "artist": this.model.artist,
-        "album": this.model.album,
-        "tracks":[{"title": this.model.title , "duration": this.model.duration}]
+        "albums":[
+          {
+            "artist": this.model.artist,
+            "album": this.model.album,
+            "tracks":[{"title": this.model.title , "duration": this.model.duration}]
+          }
+        ]
       }
     }
     
