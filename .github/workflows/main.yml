@@ -2,43 +2,37 @@ name: Continuous Deployment
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
+
+permissions:
+  contents: write
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        #node-version: [11.14.0]
-        node-version: [16.18.0]
-
     steps:
-    - uses: actions/checkout@v2
-      
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+      - uses: actions/checkout@v4
 
-    - name: Cache node modules
-      uses: actions/cache@v2
-      with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-            
-    - name: Prod Build
-      run: |
-          npm ci
-          npm run build-prod
-        
-    - name: Deploy
-      uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.3.2
-      with:
-        github_access_token: ${{ secrets.ACCESS_TOKEN }}
-        build_configuration: production # The build environment for the app. please look configurations in your angular.json
-        base_href: /web-basic-scrobbler/ # make sure this corresponds to https://<your_username>.github.io/<base_href>/
-        deploy_branch: gh-pages #The branch the action should deploy to.
-        angular_dist_build_folder: dist # The folder where your project is supposed to be after running ng build by the action.
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Production build
+        run: npm run build-prod
+
+      - name: SPA fallback for deep links
+        run: cp dist/web-basic-scrobbler/index.html dist/web-basic-scrobbler/404.html
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/web-basic-scrobbler
+          publish_branch: gh-pages
+          commit_message: 'deploy ${{ github.sha }}'
