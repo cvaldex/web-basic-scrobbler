@@ -31,4 +31,17 @@ describe('SingleTrackForm', () => {
 
     expect(componentInstance.model.title).toBe('In Rainbows');
   });
+
+  it('clears the three fields', () => {
+    const { componentInstance } = TestBed.createComponent(SingleTrackForm);
+    componentInstance.model.artist = 'Radiohead';
+    componentInstance.model.album = 'In Rainbows';
+    componentInstance.model.title = 'Nude';
+
+    componentInstance.clear();
+
+    expect(componentInstance.model.artist).toBe('');
+    expect(componentInstance.model.album).toBe('');
+    expect(componentInstance.model.title).toBe('');
+  });
 });
