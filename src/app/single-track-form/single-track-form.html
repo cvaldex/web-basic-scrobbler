@@ -1,0 +1,102 @@
+<main class="page">
+  <section class="card">
+    @if (!submitted()) {
+      <header class="card__head">
+        <h1>Scrobble a track</h1>
+        <p class="muted">Send a single play to Last.fm</p>
+      </header>
+
+      <form #form="ngForm" (ngSubmit)="scrobble()" novalidate>
+        <div class="field">
+          <label for="artist">Artist</label>
+          <input
+            id="artist"
+            name="artist"
+            type="text"
+            autocomplete="off"
+            required
+            [(ngModel)]="model.artist"
+            #artist="ngModel"
+          />
+          @if (artist.invalid && artist.touched) {
+            <p class="error">Artist is required</p>
+          }
+          <button
+            type="button"
+            class="copy"
+            [disabled]="!model.artist"
+            (click)="copyArtistToAlbum()"
+          >
+            ↓ Copy to album
+          </button>
+        </div>
+
+        <div class="field">
+          <label for="album">Album</label>
+          <input
+            id="album"
+            name="album"
+            type="text"
+            autocomplete="off"
+            required
+            [(ngModel)]="model.album"
+            #album="ngModel"
+          />
+          @if (album.invalid && album.touched) {
+            <p class="error">Album is required</p>
+          }
+          <button type="button" class="copy" [disabled]="!model.album" (click)="copyAlbumToTitle()">
+            ↓ Copy to title
+          </button>
+        </div>
+
+        <div class="field">
+          <label for="title">Title</label>
+          <input
+            id="title"
+            name="title"
+            type="text"
+            autocomplete="off"
+            required
+            [(ngModel)]="model.title"
+            #title="ngModel"
+          />
+          @if (title.invalid && title.touched) {
+            <p class="error">Title is required</p>
+          }
+        </div>
+
+        <button type="submit" class="primary" [disabled]="form.invalid || sending()">
+          {{ sending() ? 'Scrobbling…' : 'Scrobble' }}
+        </button>
+      </form>
+    } @else {
+      <header class="card__head">
+        <h1 [class.is-error]="response().status === 'error'">
+          {{ response().status === 'error' ? '⚠ Scrobble failed' : '✓ Scrobbled' }}
+        </h1>
+      </header>
+
+      <dl class="response">
+        <div>
+          <dt>Accepted</dt>
+          <dd>{{ response().accepted }}</dd>
+        </div>
+        <div>
+          <dt>Ignored</dt>
+          <dd>{{ response().ignored }}</dd>
+        </div>
+        <div>
+          <dt>Status</dt>
+          <dd>{{ response().status || '—' }}</dd>
+        </div>
+        <div>
+          <dt>Message</dt>
+          <dd>{{ response().message || '—' }}</dd>
+        </div>
+      </dl>
+
+      <button type="button" class="copy" (click)="edit()">← Edit</button>
+    }
+  </section>
+</main>
