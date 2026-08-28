@@ -66,9 +66,19 @@
           }
         </div>
 
-        <button type="submit" class="primary" [disabled]="form.invalid || sending()">
-          {{ sending() ? 'Scrobbling…' : 'Scrobble' }}
-        </button>
+        <div class="actions">
+          <button type="submit" class="primary" [disabled]="form.invalid || sending()">
+            {{ sending() ? 'Scrobbling…' : 'Scrobble' }}
+          </button>
+          <button
+            type="button"
+            class="secondary"
+            [disabled]="(!model.artist && !model.album && !model.title) || sending()"
+            (click)="clear()"
+          >
+            Clear
+          </button>
+        </div>
       </form>
     } @else {
       <header class="card__head">

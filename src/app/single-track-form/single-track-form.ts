@@ -42,6 +42,12 @@ export class SingleTrackForm {
     this.model.title = this.model.album;
   }
 
+  clear(): void {
+    this.model.artist = '';
+    this.model.album = '';
+    this.model.title = '';
+  }
+
   edit(): void {
     this.submitted.set(false);
   }
